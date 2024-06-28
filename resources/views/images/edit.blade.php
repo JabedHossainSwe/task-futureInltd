@@ -33,7 +33,7 @@
                 reader.onload = function(e) {
                     var img = new Image();
                     img.src = e.target.result;
-                    img.style.maxWidth = '200px';
+                    img.style.maxWidth = '300px';
                     imagePreview.appendChild(img);
                 };
 

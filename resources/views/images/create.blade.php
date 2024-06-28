@@ -30,16 +30,19 @@
         function previewImages() {
             const preview = document.getElementById('image-preview');
             preview.innerHTML = '';
+
             const file = document.getElementById('image').files[0];
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = document.createElement('img');
-                img.src = e.target.result;
-                img.width = 300;
-                img.style.marginRight = '10px';
-                preview.appendChild(img);
-            };
-            reader.readAsDataURL(file);
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.width = 300;
+                    img.style.marginRight = '10px';
+                    preview.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            }
         }
     </script>
 @endsection

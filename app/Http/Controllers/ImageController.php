@@ -22,20 +22,20 @@ class ImageController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $file) {
-                $path = $file->store('images', 'public');
-                Image::create([
-                    'file_name' => $file->getClientOriginalName(),
-                    'file_path' => $path,
-                ]);
-            }
-        }
+        $image = $request->file('image');
+        $imageName = time() . '.' . $image->getClientOriginalExtension();
+        $image->storeAs('public', $imageName);
 
-        return redirect()->route('images.index');
+        Image::create([
+            'file_name' => $imageName,
+            'file_path' => $imageName,
+        ]);
+
+        return redirect()->route('images.index')
+            ->with('success', 'Image uploaded successfully.');
     }
 
     public function show(Image $image)

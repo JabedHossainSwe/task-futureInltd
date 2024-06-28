@@ -6,10 +6,12 @@
         @csrf
         @method('PUT')
         <div class="form-group">
+            <label for="image">Current Image:</label>
+            <div id="image-preview" class="mt-2 mb-2">
+                <img src="{{ asset('storage/' . $image->file_path) }}" alt="{{ $image->file_name }}"
+                    style="max-width: 200px;">
+            </div>
             <input type="file" name="image" id="image" class="form-control" onchange="previewImage()">
-        </div>
-        <div id="image-preview" class="mt-3">
-            <img src="{{ asset('storage/' . $image->file_path) }}" alt="{{ $image->file_name }}" width="100">
         </div>
         <button type="submit" class="btn btn-primary">Update</button>
     </form>
@@ -18,17 +20,25 @@
 @section('scripts')
     <script>
         function previewImage() {
-            const preview = document.getElementById('image-preview');
-            preview.innerHTML = '';
-            const file = document.getElementById('image').files[0];
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = document.createElement('img');
-                img.src = e.target.result;
-                img.width = 100; // set the desired width
-                preview.appendChild(img);
-            };
-            reader.readAsDataURL(file);
+            var fileInput = document.getElementById('image');
+            var imagePreview = document.getElementById('image-preview');
+
+            imagePreview.innerHTML = '';
+
+            var files = fileInput.files;
+            if (files.length > 0) {
+                var file = files[0];
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    var img = new Image();
+                    img.src = e.target.result;
+                    img.style.maxWidth = '200px';
+                    imagePreview.appendChild(img);
+                };
+
+                reader.readAsDataURL(file);
+            }
         }
     </script>
 @endsection
